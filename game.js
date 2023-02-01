@@ -43,23 +43,30 @@ function CreateColor(color,nbr) {
 document.addEventListener("keydown",function(){
 
     if (isGameOver) {   
-        isGameOver = false;
-        currentTurn = Turn.Computer;
-        // reset player array
-        playerNumbers = [];
-
-        // launch initial computer turn
-        setTimeout(() => {computerTurn()},turnTime);
-
+        startGame();
     }
     //manageHeader();
 });
 
 // listen for clicks on buttons
 $(".btn").click(function(e){
+    if (isGameOver) {
+        console.log('starting game');
+        startGame();
+    }
     triggerByColor(e.target.id);
 });
 
+function startGame() {
+    console.log('really starting game');
+    isGameOver = false;
+    currentTurn = Turn.Computer;
+    // reset player array
+    playerNumbers = [];
+
+    // launch initial computer turn
+    setTimeout(() => {computerTurn()},turnTime);
+}
 
 function triggerByColor(color) {
     if (isGameOver) {
@@ -154,7 +161,7 @@ function nextSequence(){
 }
 function manageHeader(){
     if(isGameOver){
-        $("h1").html("Game Over - Press any key to play again");
+        $("h1").html("Game Over - Press any key or button to play again");
     } else {
         $("h1").html(`Round ${roundCount} success!`);        
     }
