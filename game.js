@@ -21,6 +21,9 @@ var   roundCount = 0;
 const fadeTime = 200;
 const turnTime = 500;
 
+manageHeader();
+
+
 // associate numbers and buttons
 function CreateColor(color,nbr) {
     this.color = color;
@@ -30,7 +33,7 @@ function CreateColor(color,nbr) {
     // div (Button) class
     this.button = $(`.${color}`);
     this.flash = function (){
-        this.button.fadeOut(fadeTime).fadeIn(fadeTime);
+        this.button.fadeOut(fadeTime/2).fadeIn(fadeTime);
     }
     this.makeNoise = function () {
         let audio = new Audio(`sounds/${color}.mp3`);
@@ -45,7 +48,6 @@ document.addEventListener("keydown",function(){
     if (isGameOver) {   
         startGame();
     }
-    //manageHeader();
 });
 
 // listen for clicks on buttons
@@ -58,9 +60,11 @@ $(".btn").click(function(e){
 });
 
 function startGame() {
-    console.log('really starting game');
+    $("body").removeClass("game-over");
     isGameOver = false;
     currentTurn = Turn.Computer;
+    manageHeader();
+
     // reset player array
     playerNumbers = [];
 
@@ -69,6 +73,7 @@ function startGame() {
 }
 
 function triggerByColor(color) {
+
     if (isGameOver) {
         return;
     }
@@ -95,8 +100,8 @@ function triggerByColor(color) {
         currentTurn = Turn.Computer;
         setTimeout(() => {computerTurn()},turnTime*4);
     }
-    manageHeader();  
 
+    manageHeader();
     return;
 };
 
@@ -120,6 +125,7 @@ function computerTurn(){
   
 
     currentTurn = Turn.Player;
+    manageHeader();
 
     return;
 }
@@ -137,6 +143,7 @@ function arraysMatch() {
 }
 
 function resetGame() {
+    $("body").addClass("game-over");
     isGameOver = true;
     currentTurn = Turn.Computer;
     generatedNumbers = [];
@@ -161,8 +168,18 @@ function nextSequence(){
 }
 function manageHeader(){
     if(isGameOver){
-        $("h1").html("Game Over - Press any key or button to play again");
+        $("h1").html("Press any key or button to play!");
+        $("h2").html("Can you beat me?");
     } else {
-        $("h1").html(`Round ${roundCount} success!`);        
+        if(roundCount==0){
+            $("h1").html("Let's Play");
+        } else {
+            $("h1").html(`Round ${roundCount} success!`);        
+        }
+        if(currentTurn==Turn.Player) {
+            $("h2").html("Your turn!");
+        } else {
+            $("h2").html("My turn!");
+        }
     }
 }
