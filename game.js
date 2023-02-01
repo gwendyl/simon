@@ -93,7 +93,7 @@ function triggerByColor(color) {
         roundCount++;
         playerNumbers = [];
         currentTurn = Turn.Computer;
-        setTimeout(() => {computerTurn()},turnTime);
+        setTimeout(() => {computerTurn()},turnTime*4);
     }
     manageHeader();  
 
